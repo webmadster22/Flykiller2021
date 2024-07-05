@@ -1,0 +1,491 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>Javascript_M4_Maria_Anderson</title>
+    <meta name="author" content="Maria Anderson" />
+    <style>
+        body {
+            width: 620px;
+            background-color: black;
+            color: navajowhite;
+        }
+
+        h1 {
+            margin-left: 155px;
+            margin-top: 0;
+            margin-bottom: none;
+            padding: none;
+            font-size: 50px;
+
+        }
+
+        h3 {
+
+            font-size: 40px;
+        }
+
+        h4 {
+            clear: both;
+            margin-top: none;
+            margin-bottom: 10px;
+            margin-left: 58px;
+            padding-top: 10px;
+            font-size: 18px;
+        }
+
+
+        .button {
+            background-color: navajowhite;
+            border-width: medium;
+            border-color: black;
+            margin: 20px;
+            font-size: 16px;
+            color: black;
+        }
+
+        /*lägger egenskaper för flugorna här i style */
+        #fluga1 {
+            background-size: contain;
+            width: 70px;
+            height: 70px;
+            position: absolute;
+
+        }
+
+        #fluga2 {
+            background-size: contain;
+            width: 60px;
+            height: 60px;
+            position: absolute;
+
+        }
+
+        #fluga3 {
+            background-size: contain;
+            width: 50px;
+            height: 50px;
+            position: absolute;
+
+        }
+
+        #fluga4 {
+            background-size: contain;
+            width: 40px;
+            height: 40px;
+            position: absolute;
+
+        }
+
+
+        /*fixar muspekarens utseende lite roligare*/
+        /* https://www.w3schools.com/cssref/tryit.asp?filename=trycss_cursor */
+        .grabbing {
+            cursor: -webkit-grabbing;
+            cursor: grabbing;
+        }
+
+        .grab {
+            cursor: -webkit-grab;
+            cursor: grab;
+        }
+
+    </style>
+</head>
+
+<body>
+    <script id="main_fluga">
+        let x = 37 + 503 * Math.random();
+        let y = 220 + 670 * Math.random();
+        let x2 = 37 + 503 * Math.random();
+        let y2 = 220 + 670 * Math.random();
+        let x3 = 37 + 503 * Math.random();
+        let y3 = 220 + 670 * Math.random();
+        let x4 = 37 + 503 * Math.random();
+        let y4 = 220 + 670 * Math.random();
+
+        let gametimer = setTimeout(GameOver, 10000);
+
+        function GameOver() {
+
+            // Här visas game over meddelandet om man ej tar alla flugor, genom att jag ändrar visibillity från hidden till visible.
+            document.getElementById("gmover").style.visibility = "visible";
+            document.getElementById("gameover").style.visibility = "visible";
+            document.getElementById("gameover2").style.visibility = "visible";
+            document.getElementById("reload").style.visibility = "visible";
+
+
+            // Jag tar också bort flugorna från skärmen genom att gömma dem om man förlorar
+            document.getElementById("fluga1").style.visibility = "hidden";
+            document.getElementById("fluga2").style.visibility = "hidden";
+            document.getElementById("fluga3").style.visibility = "hidden";
+        }
+
+    </script>
+
+    <!-- ----------------------------------------------------- -->
+    <script id="fluga_1">
+        let riktning = "right";
+        fly1IsAlive = true;
+
+        function fly1() {
+
+            //bestämmer hur fluga1 ska röra sig i vänster respektive höger riktning
+
+            if (riktning == "right") {
+                x = x + 4 + (8 * Math.random()) - (8 * Math.random());
+                y = y + (40 * Math.random()) - (40 * Math.random());
+
+            }
+            if (riktning == "left") {
+                x = x - 4 + (8 * Math.random()) - (8 * Math.random());
+                y = y + (40 * Math.random()) - (40 * Math.random());
+
+            }
+            if (riktning == "down") {
+                y = y + 4 + (30 * Math.random()) - (30 * Math.random());
+                x = x + (50 * Math.random()) - (50 * Math.random());
+
+            }
+            if (riktning == "up") {
+                y = y - 3 + (7 * Math.random()) - (7 * Math.random());
+                x = x + (30 * Math.random()) - (30 * Math.random());
+            }
+
+
+            document.getElementById("fluga1").style.left = x + "px";
+            document.getElementById("fluga1").style.top = y + "px";
+
+            //här skapas första stoppet
+            if (x >= 540) {
+                riktning = "left";
+
+            }
+            //här skapas andra stoppet
+            else if (x <= 37) {
+                riktning = "right";
+
+            }
+            //här skapas tredje stoppet
+            else if (y <= 220) {
+                riktning = "down";
+
+                //här skapas fjärde stoppet
+            } else if (y >= 890) {
+                riktning = "up";
+
+            }
+        }
+
+        //Här bestämmer jag hastigheten fluga1 rör sig med
+        let t1 = setInterval(fly1, 50);
+
+        //Här gör jag så man kan döda fluga1 med ett klick
+        function stopit() {
+            clearInterval(t1);
+            var deadfly;
+
+            deadfly = document.getElementById("fluga1");
+            deadfly.src = "DyingFly1.png";
+            /* Använde mig av följande sida för att förstå hur man ändrar en bild vid onclick:  https://www.codemahal.com/video/change-an-image-using-the-get-element-by-id-method/ */
+
+            fly1IsAlive = false;
+
+            CheckFlies(); /*kör CheckFlies för att kolla om alla flugor är döda än*/
+        }
+
+    </script>
+
+    <!------------------------------------------------------------------------------------------>
+
+    <script id="fluga_2">
+        let riktning2 = "left";
+        fly2IsAlive = true;
+
+        function fly2() {
+
+
+            //bestämmer hur fluga2 ska röra sig
+
+
+            if (riktning2 == "right") {
+                x2 = x2 + 4 + (8 * Math.random()) - (8 * Math.random());
+                y2 = y2 + (30 * Math.random()) - (30 * Math.random());
+
+            }
+            if (riktning2 == "left") {
+                x2 = x2 - 4 + (8 * Math.random()) - (8 * Math.random());
+                y2 = y2 + (40 * Math.random()) - (40 * Math.random());
+
+            }
+            if (riktning2 == "down") {
+                y2 = y2 + 4 + (20 * Math.random()) - (20 * Math.random());
+                x2 = x2 + (40 * Math.random()) - (40 * Math.random());
+
+            }
+            if (riktning2 == "up") {
+                y2 = y2 - 3 + (6 * Math.random()) - (6 * Math.random());
+                x2 = x2 + (20 * Math.random()) - (20 * Math.random());
+            }
+            document.getElementById("fluga2").style.left = x2 + "px";
+            document.getElementById("fluga2").style.top = y2 + "px";
+
+
+            //här skapas första stoppet
+            if (x2 >= 540) {
+                riktning2 = "left";
+
+            }
+            //här skapas andra stoppet
+            else if (x2 <= 37) {
+                riktning2 = "right";
+
+            }
+            //här skapas tredje stoppet
+            else if (y2 <= 220) {
+                riktning2 = "down";
+
+                //här skapas fjärde stoppet
+            } else if (y2 >= 890) {
+                riktning2 = "up";
+
+            }
+
+        }
+
+        //Här bestämmer jag hastigheten på fluga2
+        let t2 = setInterval(fly2, 75);
+
+        //Här gör jag så man kan döda fluga2 med ett klick
+        function stopit2() {
+            clearInterval(t2);
+            var deadfly;
+
+            deadfly = document.getElementById("fluga2");
+            deadfly.src = "DyingFly1.png";
+
+            fly2IsAlive = false;
+
+            CheckFlies();
+        }
+
+    </script>
+    <!-------------------------------------------------------->
+    <script id="fluga_3">
+        let riktning3 = "up";
+        fly3IsAlive = true;
+
+        function fly3() {
+
+
+            //bestämmer hur fluga3 ska röra sig
+
+
+            if (riktning3 == "right") {
+                x3 = x3 + 4 + (8 * Math.random()) - (8 * Math.random());
+                y3 = y3 + (30 * Math.random()) - (30 * Math.random());
+
+            }
+            if (riktning3 == "left") {
+                x3 = x3 - 4 + (8 * Math.random()) - (8 * Math.random());
+                y3 = y3 + (40 * Math.random()) - (40 * Math.random());
+
+            }
+            if (riktning3 == "down") {
+                y3 = y3 + 4 + (20 * Math.random()) - (20 * Math.random());
+                x3 = x3 + (40 * Math.random()) - (40 * Math.random());
+
+            }
+            if (riktning3 == "up") {
+                y3 = y3 - 3 + (6 * Math.random()) - (6 * Math.random());
+                x3 = x3 + (20 * Math.random()) - (20 * Math.random());
+            }
+            document.getElementById("fluga3").style.left = x3 + "px";
+            document.getElementById("fluga3").style.top = y3 + "px";
+
+
+            //här skapas första stoppet
+            if (x3 >= 540) {
+                riktning3 = "left";
+
+            }
+            //här skapas andra stoppet
+            else if (x3 <= 37) {
+                riktning3 = "right";
+
+            }
+            //här skapas tredje stoppet
+            else if (y3 <= 220) {
+                riktning3 = "down";
+
+                //här skapas fjärde stoppet
+            } else if (y3 >= 890) {
+                riktning3 = "up";
+
+            }
+
+        }
+
+        //Här bestämmer jag hastigheten fluga3 flyger med
+        let t3 = setInterval(fly3, 60);
+
+        //Här gör jag så man kan döda fluga3 med ett klick
+        function stopit3() {
+            clearInterval(t3);
+            var deadfly;
+
+            deadfly = document.getElementById("fluga3");
+            deadfly.src = "DyingFly1.png";
+
+
+            fly3IsAlive = false;
+
+            CheckFlies();
+        }
+
+    </script>
+    <!--
+
+
+    <script id="fluga_4">
+        let riktning4 = "right";
+        fly4IsAlive = true;
+
+        function fly4() {
+
+            //bestämmer hur fluga4 ska röra sig i vänster respektive höger riktning
+
+            if (riktning4 == "right") {
+                x4 = x4 + 3 + (8 * Math.random()) - (8 * Math.random());
+                y4 = y4 + (30 * Math.random()) - (30 * Math.random());
+
+            }
+            if (riktning4 == "left") {
+                x4 = x4 - 3 + (8 * Math.random()) - (8 * Math.random());
+                y4 = y4 + (40 * Math.random()) - (40 * Math.random());
+
+            }
+            if (riktning4 == "down") {
+                y4 = y4 + 3 + (20 * Math.random()) - (20 * Math.random());
+                x4 = x4 + (40 * Math.random()) - (40 * Math.random());
+
+            }
+            if (riktning4 == "up") {
+                y4 = y4 - 2 + (6 * Math.random()) - (6 * Math.random());
+                x4 = x4 + (20 * Math.random()) - (20 * Math.random());
+
+
+                document.getElementById("fluga4").style.left = x4 + "px";
+                document.getElementById("fluga4").style.top = y4 + "px";
+
+                //här skapas första stoppet
+                if (x4 >= 540) {
+                    riktning4 = "left";
+
+                }
+                //här skapas andra stoppet
+                else if (x4 <= 37) {
+                    riktning4 = "right";
+
+                }
+                //här skapas tredje stoppet
+                else if (y4 <= 220) {
+                    riktning4 = "down";
+
+                    //här skapas fjärde stoppet
+                } else if (y4 >= 890) {
+                    riktning4 = "up";
+
+                }
+            }
+
+            //Här bestämmer jag hastigheten fluga4 rör sig med
+            let t4 = setInterval(fly4, 60);
+
+            //Här gör jag så man kan döda fluga4 med ett klick
+            function stopit4() {
+                clearInterval(t4);
+                var deadfly;
+
+                deadfly = document.getElementById("fluga4");
+                deadfly.src = "DyingFly1.png";
+                /* Använde mig av följande sida för att förstå hur man ändrar en bild vid onclick:  https://www.codemahal.com/video/change-an-image-using-the-get-element-by-id-method/ */
+
+                fly4IsAlive = false;
+
+                CheckFlies(); /*kör CheckFlies för att kolla om alla flugor är döda än*/
+            }
+        }
+    </script>
+-->
+    <!--
+------------------------------------------------------------------
+-->
+    <script>
+        // Här kollar jag om alla flugor är döda och avaktiverar setTimeout så att You Lose inte visar sig.
+
+        function CheckFlies() {
+            if (!fly1IsAlive && !fly2IsAlive && !fly3IsAlive) {
+                clearTimeout(gametimer);
+                // då ! står för att ett värde inte är sant så använde jag mig av det i ovanstående if-sats. https://www.w3schools.com/js/js_comparisons.asp
+
+                //Nedan visar jag en "skylt" med style visibility "hidden", genom att ändra style.visibility till "visible".
+                document.getElementById("gmover").style.visibility = "visible";
+                document.getElementById("gamewin").style.visibility = "visible";
+                document.getElementById("gamewin2").style.visibility = "visible";
+                document.getElementById("reload").style.visibility = "visible";
+
+            }
+        }
+
+    </script>
+
+
+    <h1>~ Fly Killer ~</h1>
+
+
+    <h4>Mosa alla flugorna genom att klicka på dem innan tiden tar slut.</h4>
+
+    <img id="fluga1" class="grabbing" src="FlyingFly1.png" onmousedown='return false;' ondragstart='return false;' onclick="stopit();" />
+    <img id="fluga2" class="grabbing" src="FlyingFly1.png" onmousedown='return false;' ondragstart='return false;' onclick="stopit2();" />
+    <img id="fluga3" class="grabbing" src="FlyingFly1.png" onmousedown='return false;' ondragstart='return false;' onclick="stopit3();" /img>
+    <!-- <img id="fluga4" class="grabbing" src="FlyingFly1.png" onmousedown='return false;' ondragstart='return false;' onclick="stopit4();" /img> -->
+
+    <!-- Hade problem med att en blå markering visade sig över flugorna om man råkade hålla inne musknappen, men hittade ovanstående lösning (som jag implementerade även på min canvas och övrigt) på följande sida:   https://stackoverflow.com/questions/7604472/how-to-disable-dragging-with-mouse-click-any-images/7604504 -->
+
+
+    <!-- Nedan skapar jag en bakgrund för min skylt vid spelets slut -->
+    <img id="gmover" class="box" width="400px" height="200px" style="position:absolute; top:300px; left:100px; border: 10px solid navajowhite; background-color: black; color: navajowhite; visibility: hidden;" value="Game Over" onmousedown='return false;' ondragstart='return false;' />
+
+    <div id="gameover" style="position: absolute; top: 325px; left: 180px; visibility: hidden;" onmousedown='return false;' ondragstart='return false;'>
+        <h3>~ Game Over ~</h3>
+    </div>
+    <div id="gameover2" style="position: absolute; top: 420px; left: 175px; visibility: hidden;" onmousedown='return false;' ondragstart='return false;'>
+        <p>You are a lousy flyswatter - You are fired!</p>
+    </div>
+
+    <div id="gamewin" style="position: absolute; top: 325px; left: 195px; visibility: hidden;" onmousedown='return false;' ondragstart='return false;'>
+        <h3>~ You did it ~</h3>
+    </div>
+    <div id="gamewin2" style="position: absolute; top: 420px; left: 158px; visibility: hidden;" onmousedown='return false;' ondragstart='return false;'>
+        <p>You are the perfect flyswatter - You are hired!</p>
+    </div>
+
+    <!-- skapar nedan en knapp som visar sig vid spelets slut för att börja om. Jag hittade att man kunde använda sig av location.reload på följande sida:
+https://developer.mozilla.org/en-US/docs/Web/API/Location/reload -->
+    <input type="button" id="reload" class="button" value=" ~Try Again~ " onclick="location.reload();" style="position: absolute; top: 50px; left: 235px;  visibility: hidden;" onmousedown='return false;' ondragstart='return false;' />
+
+    <!-- Här nedan formar jag bakgrunden till min spelplan och ser till att det finns en class jag kan använda mig av i css ovan för att bland annat se till att muspekaren ändrar sig. -->
+    <canvas id="myCanvas" class="grab" width="600" height="800" style="border:5px solid navajowhite; background-image: url(lizzard.png); " onmousedown='return false;' ondragstart='return false;'>
+    </canvas>
+
+    <!--
+Ville ha en knapp som visar sig om funktionen checkflies är sann. Den skulle köra en function nextlevel() som skapar en extra fluga och ändrar i checkfly så den kollar efter en extra fluga med... Kan lösas med arrayer tror jag. Men känner jag börjar få slut på tid.
+<input type="button" class="button" value="Nästa Nivå" id="nextlevel" onclick="nextlevel();" />
+-->
+
+</body>
+
+</html>
+<!-- Kodad av Maria Anderson Ht 2020 -> Vt 2021 -->
